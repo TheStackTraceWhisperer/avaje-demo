@@ -1,0 +1,8 @@
+com/example/demo/DemoEvent.class
+com/example/demo/DemoApplication.class
+com/example/demo/EventProducer.class
+com/example/demo/EventListener$DI.class
+META-INF/services/io.avaje.inject.spi.InjectExtension
+com/example/demo/DemoModule.class
+com/example/demo/EventListener.class
+com/example/demo/EventProducer$DI.class
