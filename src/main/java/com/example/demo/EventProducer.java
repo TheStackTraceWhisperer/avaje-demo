@@ -1,13 +1,18 @@
 package com.example.demo;
 
+import com.example.demo.annotation.TraceLogged;
+import com.example.demo.annotation.Timed;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 /**
  * Event producer that creates and sends events to the listener.
  * Demonstrates dependency injection with avaje-inject.
+ * Enhanced with aspect-oriented trace logging and timing metrics.
  */
 @Singleton
+@TraceLogged
+@Timed
 public class EventProducer {
     private final EventListener eventListener;
 

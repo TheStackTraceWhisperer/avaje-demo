@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.annotation.TraceLogged;
+import com.example.demo.annotation.Timed;
 import jakarta.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +9,11 @@ import java.util.List;
 /**
  * Event listener that handles demo events.
  * Uses @Singleton to be managed by avaje-inject.
+ * Enhanced with aspect-oriented trace logging and timing metrics.
  */
 @Singleton
+@TraceLogged
+@Timed
 public class EventListener {
     private final List<DemoEvent> receivedEvents = new ArrayList<>();
 
