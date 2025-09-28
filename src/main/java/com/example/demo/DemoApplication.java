@@ -1,16 +1,17 @@
 package com.example.demo;
 
+import com.example.demo.aspect.TimedProvider;
 import io.avaje.inject.BeanScope;
 
 /**
  * Main demonstration class showing how to use avaje-inject
  * to wire up the event system and run it.
- * Enhanced to demonstrate trace logging and timing metrics.
+ * Enhanced to demonstrate aspect-oriented trace logging and timing metrics.
  */
 public class DemoApplication {
 
     public static void main(String[] args) {
-        System.out.println("Starting Avaje Inject Demo with Interceptors...");
+        System.out.println("Starting Avaje Inject Demo with Aspect-Oriented Programming...");
 
         // Create the bean scope - this is where avaje-inject does its magic
         try (BeanScope beanScope = BeanScope.builder().build()) {
@@ -18,13 +19,14 @@ public class DemoApplication {
             // Get our components - avaje-inject handles the wiring
             EventProducer producer = beanScope.get(EventProducer.class);
             EventListener listener = beanScope.get(EventListener.class);
+            TimedProvider timedProvider = beanScope.get(TimedProvider.class);
 
             System.out.println("Components successfully injected!");
             
-            // Demonstrate the event system with trace logging and timing
-            System.out.println("\nProducing some events with interceptor logging...");
-            producer.produceEvent("Hello from avaje-inject with interceptors!");
-            producer.produceEvent("This demonstrates aspect-oriented programming");
+            // Demonstrate the event system with AOP aspects
+            System.out.println("\nProducing some events with aspect-oriented logging and timing...");
+            producer.produceEvent("Hello from avaje aspects!");
+            producer.produceEvent("This demonstrates proper aspect-oriented programming");
             producer.produceEvents("Timed Event 1", "Timed Event 2", "Timed Event 3");
 
             // Show the results
@@ -36,10 +38,9 @@ public class DemoApplication {
                 System.out.println("  - " + event)
             );
             
-            // Show timing statistics
-            System.out.println("\n=== TIMING STATISTICS ===");
-            producer.logTimingStats();
-            listener.logTimingStats();
+            // Show timing statistics from the aspect
+            System.out.println();
+            timedProvider.getInterceptor().logAllStats();
 
         } catch (Exception e) {
             System.err.println("Error running demo: " + e.getMessage());

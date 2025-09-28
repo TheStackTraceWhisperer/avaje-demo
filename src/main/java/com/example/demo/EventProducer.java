@@ -1,20 +1,20 @@
 package com.example.demo;
 
-import com.example.demo.interceptor.TraceLogger;
-import com.example.demo.interceptor.TimingMetrics;
+import com.example.demo.annotation.TraceLogged;
+import com.example.demo.annotation.Timed;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 /**
  * Event producer that creates and sends events to the listener.
  * Demonstrates dependency injection with avaje-inject.
- * Enhanced with trace logging and timing metrics.
+ * Enhanced with aspect-oriented trace logging and timing metrics.
  */
 @Singleton
+@TraceLogged
+@Timed
 public class EventProducer {
     private final EventListener eventListener;
-    private final TraceLogger traceLogger = new TraceLogger(EventProducer.class);
-    private final TimingMetrics timingMetrics = new TimingMetrics(EventProducer.class);
 
     /**
      * Constructor injection - avaje-inject will provide the EventListener.
@@ -25,49 +25,19 @@ public class EventProducer {
     }
 
     /**
-     * Produce and send an event with trace logging and timing.
+     * Produce and send an event.
      */
     public void produceEvent(String message) {
-        try {
-            timingMetrics.timeVoidMethod("produceEvent", () -> {
-                traceLogger.traceVoidMethod("produceEvent", () -> {
-                    DemoEvent event = new DemoEvent(message);
-                    eventListener.onEvent(event);
-                }, message);
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        DemoEvent event = new DemoEvent(message);
+        eventListener.onEvent(event);
     }
 
     /**
-     * Produce multiple events with trace logging and timing.
+     * Produce multiple events.
      */
     public void produceEvents(String... messages) {
-        try {
-            timingMetrics.timeVoidMethod("produceEvents", () -> {
-                traceLogger.traceVoidMethod("produceEvents", () -> {
-                    for (String message : messages) {
-                        produceEvent(message);
-                    }
-                }, (Object[]) messages);
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        for (String message : messages) {
+            produceEvent(message);
         }
-    }
-    
-    /**
-     * Get timing statistics for this component.
-     */
-    public TimingMetrics.TimingStat getTimingStats(String methodName) {
-        return timingMetrics.getTimingStats(methodName);
-    }
-    
-    /**
-     * Log all timing statistics.
-     */
-    public void logTimingStats() {
-        timingMetrics.logAllStats();
     }
 }

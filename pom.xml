@@ -44,7 +44,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- SLF4J for logging -->
+        <!-- SLF4J for logging (needed for trace logging) -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
